@@ -1,0 +1,14 @@
+name: UltimateTrash
+main: br.net.fabiozumbi12.UTrash.UTrash
+version: ${project.version}
+commands:
+  trash:
+    description: "Command to open the trash."
+    aliases: [lixo, lixeira]
+permissions:
+  uchat.default:
+    description: "Default perms."
+    default: op
+    children:
+      utrash.use: true
+      utrash.reload: true
