@@ -12,7 +12,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Colorable;
@@ -29,7 +28,7 @@ public class UTGui implements Listener {
 
     public UTGui(Player p){
         this.p = p;
-        guiName = UTrash.instance().toColor(UTrash.instance().getConfig().getString("Strings.guiname"));
+        guiName = UTrash.instance().toColor(UTrash.instance().getConfig().getString("strings.guiname"));
         isTemp = UTrash.instance().getConfig().getInt("general.temp-trash.time") > 0;
         UTrash.instance().getServer().getPluginManager().registerEvents(this, UTrash.instance());
     }
@@ -121,19 +120,10 @@ public class UTGui implements Listener {
         Bukkit.getScheduler().runTaskLater(UTrash.instance(), ()-> this.p.updateInventory(), 1);
 
         if (isTemp){
-            boolean diff = false;
-            for (int i = 9; i < this.inv.getContents().length; i++){
-                if (this.inv.getContents()[i] != this.p.getOpenInventory().getTopInventory().getContents()[i]){
-                    diff = true;
-                    break;
-                }
+            if (!UTrash.instance().tempTrash.containsKey(this.p.getName())){
+                new TempTrash(this.p.getName(), this.items).runTaskTimer(UTrash.instance(), 20, 20);
             }
-            if (diff){
-                if (!UTrash.instance().tempTrash.containsKey(this.p.getName())){
-                    new TempTrash(this.p.getName(), items).runTaskTimer(UTrash.instance(), 20, 20);
-                }
-                UTrash.instance().tempTrash.put(this.p.getName(), this.inv.getContents());
-            }
+            UTrash.instance().tempTrash.put(this.p.getName(), this.inv.getContents());
         }
         Bukkit.getScheduler().runTask(UTrash.instance(), () -> p.closeInventory());
         if (runnableID != -1) Bukkit.getScheduler().cancelTask(runnableID);
@@ -148,6 +138,7 @@ public class UTGui implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e){
         if (e.getPlayer().equals(this.p)){
+            this.inv = e.getInventory();
             Close();
         }
     }

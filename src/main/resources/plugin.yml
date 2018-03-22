@@ -6,6 +6,8 @@ commands:
     description: "Command to open the trash."
     aliases: [lixo, lixeira]
 permissions:
+  utrash.use:
+    default: true
   uchat.default:
     description: "Default perms."
     default: op

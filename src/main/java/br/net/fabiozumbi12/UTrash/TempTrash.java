@@ -4,15 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TempTrash extends BukkitRunnable {
-    int time;
-    String p;
-    ItemStack[] def;
+    private int time;
+    private String p;
+    public ItemStack[] def;
     TempTrash(String p, ItemStack[] def){
         this.time = UTrash.instance().getConfig().getInt("general.temp-trash.time");
         this.p = p;
@@ -26,7 +25,7 @@ public class TempTrash extends BukkitRunnable {
 
             if (Bukkit.getPlayer(this.p) != null){
                 Player play = Bukkit.getPlayer(this.p);
-                if (play.getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("Strings.guiname")))){
+                if (play.getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("strings.guiname")))){
                     ItemStack watch = new ItemStack(Material.WATCH, 1);
                     watch.setType(Material.WATCH);
                     ItemMeta meta = watch.getItemMeta();
@@ -38,7 +37,7 @@ public class TempTrash extends BukkitRunnable {
         } else {
             if (Bukkit.getPlayer(this.p) != null) {
                 Player play = Bukkit.getPlayer(this.p);
-                if (play.getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("Strings.guiname")))) {
+                if (play.getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("strings.guiname")))) {
                     for (int i = 0; i < 54; i++){
                         play.getOpenInventory().setItem(i, def[i]);
                     }

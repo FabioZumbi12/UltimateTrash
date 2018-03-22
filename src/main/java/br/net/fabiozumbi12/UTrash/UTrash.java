@@ -91,7 +91,7 @@ public class UTrash extends JavaPlugin implements CommandExecutor {
         if (args.length == 1){
             if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("utrash.reload")){
                 reload();
-                sender.sendMessage(toColorTag(getConfig().getString("string.reload")));
+                sender.sendMessage(toColorTag(getConfig().getString("strings.reload")));
                 return true;
             }
         }
@@ -103,8 +103,8 @@ public class UTrash extends JavaPlugin implements CommandExecutor {
         Player p = (Player)sender;
         if (args.length == 0){
             if (sender.hasPermission("utrash.use")){
-                if (!getConfig().getStringList("general.blacklist-worlds").contains(p.getWorld().getName())){
-                    sender.sendMessage(toColorTag(getConfig().getString("string.blacklist-world")));
+                if (getConfig().getStringList("general.blacklist-worlds").contains(p.getWorld().getName())){
+                    sender.sendMessage(toColorTag(getConfig().getString("strings.blacklist-world")));
                     return true;
                 }
                 new UTGui(p).Open();
@@ -119,6 +119,6 @@ public class UTrash extends JavaPlugin implements CommandExecutor {
     }
 
     public String toColorTag(String msg){
-        return ChatColor.translateAlternateColorCodes('&', getConfig().getString("Strings.tag")+msg);
+        return ChatColor.translateAlternateColorCodes('&', getConfig().getString("strings.tag")+msg);
     }
 }
