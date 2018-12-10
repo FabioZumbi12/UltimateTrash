@@ -1,6 +1,7 @@
 name: UltimateTrash
 main: br.net.fabiozumbi12.UTrash.UTrash
 version: ${project.version}
+api-version: 1.13
 commands:
   trash:
     description: "Command to open the trash."

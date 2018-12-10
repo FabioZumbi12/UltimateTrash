@@ -53,6 +53,7 @@ public class UTrash extends JavaPlugin implements CommandExecutor {
 
         getConfig().addDefault("materials.close.material","WOOL");
         getConfig().addDefault("materials.close.color",14);
+        getConfig().addDefault("materials.timer","CLOCK");
 
         //header
         getConfig().addDefault("materials.header.1.material","STAINED_GLASS_PANE");

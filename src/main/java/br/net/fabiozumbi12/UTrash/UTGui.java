@@ -58,10 +58,12 @@ public class UTGui implements Listener {
             Material mat = Material.getMaterial(UTrash.instance().getConfig().getString("materials."+index+".material").toUpperCase());
             try {
                 if (isTemp && i == 4){
-                    items[i] = new ItemStack(Material.WATCH,1);
-                } else {
-                    items[i] = new ItemStack(mat,1);
+                    mat = Material.getMaterial("WATCH");
+                    try {
+                        mat = (Material.getMaterial(UTrash.instance().getConfig().getString("materials.timer")));
+                    } catch (Exception ignore){}
                 }
+                items[i] = new ItemStack(mat,1);
             } catch (Exception ex){
                 UTrash.instance().getLogger().warning("No material for config on materials: "+index);
                 return;

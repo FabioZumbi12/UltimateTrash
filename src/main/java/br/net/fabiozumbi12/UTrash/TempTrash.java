@@ -26,8 +26,10 @@ public class TempTrash extends BukkitRunnable {
             if (Bukkit.getPlayer(this.p) != null){
                 Player play = Bukkit.getPlayer(this.p);
                 if (play.getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("strings.guiname")))){
-                    ItemStack watch = new ItemStack(Material.WATCH, 1);
-                    watch.setType(Material.WATCH);
+                    ItemStack watch = new ItemStack(Material.getMaterial("WATCH"), 1);
+                    try {
+                        watch.setType(Material.getMaterial(UTrash.instance().getConfig().getString("materials.timer")));
+                    } catch (Exception ignore){}
                     ItemMeta meta = watch.getItemMeta();
                     meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("general.temp-trash.watch-msg").replace("{sec}", String.valueOf(time))));
                     watch.setItemMeta(meta);
