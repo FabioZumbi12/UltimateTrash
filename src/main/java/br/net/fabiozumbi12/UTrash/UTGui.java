@@ -79,16 +79,17 @@ public class UTGui implements Listener {
             }
             items[i].setItemMeta(meta);
 
-
-            //color
-            DyeColor color;
-            try {
-                color = DyeColor.getByDyeData((byte)UTrash.instance().getConfig().getInt("materials."+index+".color"));
-            } catch (Exception ex){
-                color = null;
-            }
-            if (color != null && (items[i].getData() instanceof Colorable || items[i].getType().name().contains("STAINED")) ){
-                items[i].setDurability(color.getDyeData());
+            //color (legacy)
+            if (items[i].getData() instanceof Colorable){
+                DyeColor color;
+                try {
+                    color = DyeColor.getByDyeData((byte)UTrash.instance().getConfig().getInt("materials."+index+".color"));
+                } catch (Exception ex){
+                    color = null;
+                }
+                if (color != null){
+                    items[i].setDurability(color.getDyeData());
+                }
             }
         }
 
@@ -100,18 +101,30 @@ public class UTGui implements Listener {
             //random header colors
             Runnable runnable = () -> {
                 try {
+                    int colorNum = 0;
                     for(int i = 1; i < 8; i++) {
                         if (isTemp && i == 4) continue;
 
                         ItemStack is = inv.getItem(i);
-                        DyeColor color;
-                        try {
-                            color = DyeColor.getByDyeData((byte) (new Random().nextInt(13)+1));
-                        } catch (Exception ex){
-                            color = null;
+
+                        // Random material
+                        if (items[i].getType().name().contains("STAINED")) {
+                            Material[] mat = Arrays.stream(Material.values()).filter(m -> m.name().contains("_STAINED_GLASS_PANE")).toArray(Material[]::new);
+                            if (mat.length > 0)
+                                is.setType(mat[new Random().nextInt(mat.length)]);
                         }
-                        if (color != null && (is.getData() instanceof Colorable || is.getType().name().contains("STAINED")) ){
-                            is.setDurability(color.getDyeData());
+
+                        // Color (legacy)
+                        else if (items[i].getData() instanceof Colorable){
+                            DyeColor color;
+                            try {
+                                color = DyeColor.getByDyeData((byte) (new Random().nextInt(13)+1));
+                            } catch (Exception ex){
+                                color = null;
+                            }
+                            if (color != null){
+                                is.setDurability(color.getDyeData());
+                            }
                         }
                     }
                 } catch (Exception ex){
@@ -119,7 +132,7 @@ public class UTGui implements Listener {
                     if (runnableID != -1) Bukkit.getScheduler().cancelTask(runnableID);
                 }
             };
-            runnableID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UTrash.instance(), runnable, 10L,10L);
+            runnableID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UTrash.instance(), runnable, 5L,5L);
         }
     }
 
