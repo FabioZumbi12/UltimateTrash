@@ -21,7 +21,7 @@ public class UTrash extends JavaPlugin implements CommandExecutor {
     }
 
     public void onEnable(){
-        this.plugin = this;
+        plugin = this;
         this.tempTrash = new HashMap<>();
         getCommand("trash").setExecutor(this);
 
@@ -48,34 +48,34 @@ public class UTrash extends JavaPlugin implements CommandExecutor {
         getConfig().addDefault("strings.clear","&a» Clear Trash!");
         getConfig().addDefault("strings.blacklist-world","You can't use trash in this world!");
 
-        getConfig().addDefault("materials.clear.material","WOOL");
-        getConfig().addDefault("materials.clear.color",5);
+        getConfig().addDefault("materials.clear.material","YELLOW_WOOL");
+        getConfig().addDefault("materials.clear.color",0);
 
-        getConfig().addDefault("materials.close.material","WOOL");
-        getConfig().addDefault("materials.close.color",14);
+        getConfig().addDefault("materials.close.material","RED_WOOL");
+        getConfig().addDefault("materials.close.color",0);
         getConfig().addDefault("materials.timer","CLOCK");
 
         //header
-        getConfig().addDefault("materials.header.1.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.1.color",13);
+        getConfig().addDefault("materials.header.1.material","BLACK_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.1.color",0);
 
-        getConfig().addDefault("materials.header.2.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.2.color",13);
+        getConfig().addDefault("materials.header.2.material","GRAY_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.2.color",0);
 
-        getConfig().addDefault("materials.header.3.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.3.color",13);
+        getConfig().addDefault("materials.header.3.material","GREEN_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.3.color",0);
 
-        getConfig().addDefault("materials.header.4.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.4.color",13);
+        getConfig().addDefault("materials.header.4.material","RED_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.4.color",0);
 
-        getConfig().addDefault("materials.header.5.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.5.color",13);
+        getConfig().addDefault("materials.header.5.material","BLUE_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.5.color",0);
 
-        getConfig().addDefault("materials.header.6.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.6.color",13);
+        getConfig().addDefault("materials.header.6.material","LIME_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.6.color",0);
 
-        getConfig().addDefault("materials.header.7.material","STAINED_GLASS_PANE");
-        getConfig().addDefault("materials.header.7.color",13);
+        getConfig().addDefault("materials.header.7.material","MAGENTA_STAINED_GLASS_PANE");
+        getConfig().addDefault("materials.header.7.color",0);
 
         getConfig().options().copyDefaults(true);
         saveConfig();

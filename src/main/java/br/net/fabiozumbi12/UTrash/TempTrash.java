@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Arrays;
+
 public class TempTrash extends BukkitRunnable {
     private int time;
     private String p;
@@ -26,10 +28,12 @@ public class TempTrash extends BukkitRunnable {
             if (Bukkit.getPlayer(this.p) != null){
                 Player play = Bukkit.getPlayer(this.p);
                 if (play.getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("strings.guiname")))){
-                    ItemStack watch = new ItemStack(Material.getMaterial("WATCH"), 1);
+                    ItemStack watch;
                     try {
-                        watch.setType(Material.getMaterial(UTrash.instance().getConfig().getString("materials.timer")));
-                    } catch (Exception ignore){}
+                        watch = new ItemStack(Material.getMaterial(UTrash.instance().getConfig().getString("materials.timer")));
+                    } catch (Exception ignore){
+                        watch = new ItemStack(Arrays.stream(Material.values()).filter(m -> m.name().contains("CLOCK")).findFirst().get());
+                    }
                     ItemMeta meta = watch.getItemMeta();
                     meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', UTrash.instance().getConfig().getString("general.temp-trash.watch-msg").replace("{sec}", String.valueOf(time))));
                     watch.setItemMeta(meta);

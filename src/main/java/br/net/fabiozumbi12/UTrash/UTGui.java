@@ -15,16 +15,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Colorable;
+import sun.reflect.annotation.ExceptionProxy;
 
 import java.util.*;
 
 public class UTGui implements Listener {
-    private Player p;
-    private String guiName;
+    private final Player p;
+    private final String guiName;
     private Inventory inv;
     private ItemStack[] items;
     private int runnableID = -1;
-    private boolean isTemp;
+    private final boolean isTemp;
 
     public UTGui(Player p){
         this.p = p;
@@ -58,12 +59,13 @@ public class UTGui implements Listener {
             Material mat = Material.getMaterial(UTrash.instance().getConfig().getString("materials."+index+".material").toUpperCase());
             try {
                 if (isTemp && i == 4){
-                    mat = Material.getMaterial("WATCH");
                     try {
                         mat = (Material.getMaterial(UTrash.instance().getConfig().getString("materials.timer")));
-                    } catch (Exception ignore){}
+                    } catch (Exception ignore){
+                        mat = Material.getMaterial("CLOCK");
+                    }
                 }
-                items[i] = new ItemStack(mat,1);
+                items[i] = new ItemStack(mat);
             } catch (Exception ex){
                 UTrash.instance().getLogger().warning("No material for config on materials: "+index);
                 return;
@@ -97,19 +99,24 @@ public class UTGui implements Listener {
         if (UTrash.instance().getConfig().getBoolean("general.random-header-colors")){
             //random header colors
             Runnable runnable = () -> {
-                for(int i = 1; i < 8; i++) {
-                    if (isTemp && i == 4) continue;
+                try {
+                    for(int i = 1; i < 8; i++) {
+                        if (isTemp && i == 4) continue;
 
-                    ItemStack is = inv.getItem(i);
-                    DyeColor color;
-                    try {
-                        color = DyeColor.getByDyeData((byte) (new Random().nextInt(13)+1));
-                    } catch (Exception ex){
-                        color = null;
+                        ItemStack is = inv.getItem(i);
+                        DyeColor color;
+                        try {
+                            color = DyeColor.getByDyeData((byte) (new Random().nextInt(13)+1));
+                        } catch (Exception ex){
+                            color = null;
+                        }
+                        if (color != null && (is.getData() instanceof Colorable || is.getType().name().contains("STAINED")) ){
+                            is.setDurability(color.getDyeData());
+                        }
                     }
-                    if (color != null && (is.getData() instanceof Colorable || is.getType().name().contains("STAINED")) ){
-                        is.setDurability(color.getDyeData());
-                    }
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                    if (runnableID != -1) Bukkit.getScheduler().cancelTask(runnableID);
                 }
             };
             runnableID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UTrash.instance(), runnable, 10L,10L);
